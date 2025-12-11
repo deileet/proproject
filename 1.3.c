@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <float.h>
  
 
 /**
@@ -34,7 +35,7 @@ double getPressure(const double height);
  */
 int main(void){
     printf("Введите число:\n");
-    double height = getValue();
+    const double height = getValue();
     checkValue(height);
     printf("Pressure = %.2lf\n", getPressure(height));
     return 0;
@@ -44,17 +45,18 @@ double getValue(void){
     double value = 0;
     if (!scanf("%lf", &value))
     {
-        printf("Error\n");
-        abort();
+        fprintf(stderr, "Error\n");
+        exit(1);
     }
     return value;
 }
  
-void checkValue(const double value){
-    if (value <= 0)
+void checkValue(const double value)
+{
+    if (!(value >= DBL_EPSILON))
     {
-        printf("Value have to be possitive\n");
-        abort();
+        fprintf(stderr, "Value have to be possitive\n");
+        exit(1);
     }
 }
  
