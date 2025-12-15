@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <cmath>
 #include <float.h>
 /**
  * @brief считывает значение, введенное с клавиатуры с проверкой ввода
@@ -58,3 +59,4 @@ double getSquare(const double length){
     double rad = length / (2 * (M_PI));
     return rad * rad * (M_PI);
 }
+
