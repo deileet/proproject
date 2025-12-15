@@ -3,60 +3,71 @@
 #include <math.h>
 
 /**
- * @brief считывает целое значение с проверкой ввода
- * @return Введенное значение
+ * @brief считывает целое значение с клавиатуры с проверкой ввода
+ * @return считанное значение
  */
-int getInt();
+int getValue(void);
 
 /**
- * @brief считывает вещественное значение с проверкой ввода
- * @return Введенное значение
+ * @brief считывает вещественное значение с клавиатуры с проверкой ввода
+ * @return считанное значение
  */
-double getDouble();
+double getDouble(void);
 
 /**
- * @brief рассчитывает сумму первых n членов последовательности
- * @param n - количество членов для суммирования
- * @return рассчитанная сумма
+ * @brief вычисляет сумму членов ряда
+ * @param n число членов
+ * @return возвращает рассчитанную сумму
  */
-double sumN(const int n);
+double getSumN(const int n);
 
 /**
- * @brief рассчитывает сумму членов с точностью e
- * @param e - заданная точность (минимальное значение члена)
- * @return рассчитанная сумма
+ * @brief вычисляет сумму ряда с заданной точностью e
+ * @param e требуемая точность
+ * @return возвращает рассчитанную сумму
  */
-double sumE(const double e);
+double getSumE(const double e);
 
 /**
- * @brief проверяет, что число положительное
- * @param value - проверяемое значение
+ * @brief высчитывает коэффициент рекуррентного выражения
+ * @param i текущий индекс члена ряда
+ * @return возвращает рассчитанное значения коэффициента
  */
-void checkValue(const double value);
-
-
+double getRecurent(const int i);
 
 /**
- * @brief Точка входа в программу
- * @return возвращает 0, если программма выполнена корректно
+ * @brief проверяет что значение неотрицательное
+ * @param value проверяемое значение
+ */
+void checkPositive(const double value);
+
+/**
+ * @brief точка входа в программу
+ * @return возвращает 0 если программа выполнена корректно
  */
 int main(void)
 {
-    printf("Enter value n: ");
-    int n = getInt();
-    checkValue(n);
-    printf("Sum of the first %d terms of the series = %.4lf\n", n, sumN(n));
-    printf("Enter value e: ");
-    double e = getDouble();
-    checkValue(e);
-    printf("sum of the first terms of the series with accuracy %.5lf = %.5lf\n", e, sumE(e));    
+    printf("Enter n:\n");
+    const int n = getValue();
+    checkPositive(n);
+
+    const double sumN = getSumN(n);
+    printf("The sum of the %d numbers in the sequence is equal to %.6lf\n", n + 1, sumN);
+
+    printf("Enter e:\n");
+    const double e = getDouble();
+    checkPositive(e);
+
+    const double sumE = getSumE(e);
+    printf("The sum of the sequence with precision %lf is equal to %.6lf\n", e, sumE);
+
     return 0;
 }
 
-int getInt()
+int getValue(void)
 {
     int value = 0;
-    if (!scanf("%d", &value))
+    if (!(scanf("%d", &value)))
     {
         fprintf(stderr, "Error\n");
         exit(1);
@@ -64,10 +75,10 @@ int getInt()
     return value;
 }
 
-double getDouble()
+double getDouble(void)
 {
     double value = 0;
-    if (!scanf("%lf", &value))
+    if (!(scanf("%lf", &value))) 
     {
         fprintf(stderr, "Error\n");
         exit(1);
@@ -75,60 +86,40 @@ double getDouble()
     return value;
 }
 
-void checkValue(const double value)
+double getSumN(const int n)
 {
-    if (value <= __DBL_EPSILON__)
+    double current = 1.0;
+    double result = current;    
+    for (int i = 0; i < n; i++) 
     {
-        fprintf(stderr, "Value have to be positive\n");
+        current *= getRecurent(i);
+        result += current;
+    }
+    return result;
+}
+
+double getRecurent(const int i)
+{
+    return -1.0 / ((i + 2) * (i + 1));
+}
+
+void checkPositive(const double value)
+{
+    if (value < __DBL_EPSILON__) 
+    {
+        fprintf(stderr, "Error.\n");
         exit(1);
     }
 }
 
-double sumN(const int n)
+double getSumE(const double e)
 {
     double current = 1.0;
-    double sum = current;
-    double fact_k = 1.0;
-    double fact_k1 = 1.0;
-    
-    for (int k = 1; k < n; k++)
+    double result = 0.0;
+    for (int i = 0; fabs(current) > e; i++) 
     {
-        fact_k = fact_k * k;
-        fact_k1 = fact_k * (k + 1);
-        if (k % 2 == 0) {
-            current = 1.0 / (fact_k * fact_k1);
-        } else {
-            current = -1.0 / (fact_k * fact_k1);
-        }
-        sum += current;
+        result += current;
+        current *= getRecurent(i);
     }
-    
-    return sum;
-}
-
-double sumE(const double e)
-{
-    double current = 1.0;
-    double sum = 0.0;
-    int k = 0;
-    double fact_k = 1.0;
-    double fact_k1 = 1.0;
-    while (fabs(current) >= e)
-    {
-        sum += current;
-        k++;
-        if (k == 0) {
-            current = 1.0;
-        } else {
-            fact_k = fact_k * k;
-            fact_k1 = fact_k * (k + 1);
-            if (k % 2 == 0) {
-                current = 1.0 / (fact_k * fact_k1);
-            } else {
-                current = -1.0 / (fact_k * fact_k1);
-            }
-        }
-    }
-    
-    return sum;
+    return result;
 }
