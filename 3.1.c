@@ -1,12 +1,27 @@
 #include <stdio.h>
+#include <float.h>
 #include <math.h>
+#include <stdlib.h>
+
+/**
+ * @brief считывает значение,
+ * введенное с клавиатуры с проверкой ввода
+ * @return считанное значение
+ */
+double getValue();
+
+/**
+ * @brief проверяет,что переменная положительная
+ * @param step значение проверяемой переменной
+ */
+void checkStep(const double step);
 
 /**
  * @brief рассчитывает значение функции y по заданной формуле
- * @param x значение 
+ * @param x значение x
  * @return 
  */
-double getY(void);
+double getY(const double x);
 
 /**
  * @brief Точка входа в программу
@@ -14,15 +29,43 @@ double getY(void);
  */
 int main(void)
 {
-	getY();
-    return 0;
+	
+    printf("Enter the starting value: ");
+	const double start = getValue();
+	printf("Enter the final value: ");
+	const double end = getValue();
+	printf("Enter step: ");
+	const double step = getValue();
+	checkStep(step);
+	for (double x = start; x < end + DBL_EPSILON; x = x + step)
+	{
+        printf("x = %.2lf, y = %.4lf\n", x, getY(x));
+	}
+	return 0;
 }
 
-double getY(void)
+
+double getY(const double x)
 {
-    for (double x = 1;  x - 3  <=  1e-10  ; x = x + 0.2)
-    {
-       printf("y = %.4lf\n",  3 *  x - 14 + exp(x) - exp(-x));
-    }
-    return 0;
+    return 3 * x - 14 + exp(x) - exp(-x);
+}
+
+double getValue(void)
+{
+	double value = 0;
+	if (!scanf_s("%lf", &value))
+	{
+		fprintf(stderr, "Error\n");
+		exit(1);    
+	}
+	return value;
+}
+
+void checkStep(const double step)
+{
+	if (step <= DBL_EPSILON)
+	{
+		fprintf(stderr, "Error!\n");
+		exit(1);
+	}
 }
