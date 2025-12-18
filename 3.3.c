@@ -31,9 +31,9 @@ double lnFunc(const double x);
 
 /**
  * @brief Вычисляет коэффициент рекуррентного выражения
- * @param n текущий индекс
+ * @param n текущий индекс (для a_{n-1} → a_n, n ≥ 2)
  * @param x значение параметра x
- * @return рассчитанное значение 
+ * @return коэффициент для умножения на предыдущий член
  */
 double getRecurrent(const int n, const double x);
 
@@ -107,15 +107,15 @@ double lnFunc(const double x)
 
 double getRecurrent(const int n, const double x)
 {
-    return -(1.0 + x) * (1.0 + x) * n / (n + 1.0); //разложение ряда
+    return -1 * (1.0 + x) * (1.0 + x) * (n - 1) / n;
 }
 
 double getSumE(const double e, const double x)
 {
-    double current = -(1.0 + x) * (1.0 + x);  // а0
+    double current = -1 * (1.0 + x) * (1.0 + x);
     double sum = current;
     
-    for (int n = 1; fabs(current) > e; n++)
+    for (int n = 2; fabs(current) > e + DBL_EPSILON; n++)
     {
         current *= getRecurrent(n, x);
         sum += current;
