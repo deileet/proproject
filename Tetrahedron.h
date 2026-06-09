@@ -1,74 +1,41 @@
 #pragma once
-#include <iostream>
-#include <string>
+#include "RegularSolid.h"
+#include "Point.h"
+#include <vector>
 
-/**
- * @brief Класс Полное имя
- */
-class FullName
-{
-private:
-    /**
-     * @brief Фамилия
-     */
-    std::string surname;
+namespace geometry {
+    enum class SphereType {
+        Inscribed,
+        Circumscribed
+    };
 
-    /**
-     * @brief Имя
-     */
-    std::string name;
+    class Tetrahedron : public RegularSolid {
+    private:
+        enum { VERTEX_COUNT = 4 };
+        std::vector<Point> vertices;
+        bool isValidTetrahedron();
+        double getEdgeLength();
 
-    /**
-     * @brief Отчество
-     */
-    std::string patronymic;
-
-public:
-    /**
-     * @brief Конструктор полного имени
-     * @param surname Фамилия
-     * @param name Имя
-     * @param patronymic Отчество
-     */
-    FullName(const std::string& surname = "", const std::string& name = "", const std::string& patronymic = "");
-
-    /**
-     * @brief Получение фамилии
-     * @return фамилия
-     */
-    std::string getSurname() const;
-
-    /**
-     * @brief Получение имени
-     * @return имя
-     */
-    std::string getName() const;
-
-    /**
-     * @brief Получение отчества
-     * @return отчество
-     */
-    std::string getPatronymic() const;
-
-    /**
-     * @brief Оператор вывода полного имени
-     * @param os поток вывода
-     * @param fullName объект FullName
-     * @return поток вывода
-     */
-    friend std::ostream& operator<<(std::ostream& os, const FullName& fullName);
-
-    /**
-     * @brief Оператор ввода полного имени
-     * @param is поток ввода
-     * @param fullName объект FullName
-     * @return поток ввода
-     */
-    friend std::istream& operator>>(std::istream& is, FullName& fullName);
-
-    /**
-     * @brief Сериализация в строку
-     * @return строковое представление ФИО
-     */
-    std::string toString() const;
-};
+    public:
+        Tetrahedron();
+        Tetrahedron(Point& p1, Point& p2, Point& p3, Point& p4);
+        Tetrahedron(double x1, double y1, double z1,
+            double x2, double y2, double z2,
+            double x3, double y3, double z3,
+            double x4, double y4, double z4);
+        Tetrahedron(Point& center, double edgeLength, SphereType sphereType);
+        Tetrahedron(Tetrahedron& other);
+        Tetrahedron& operator=(Tetrahedron& other);
+        double getSurfaceArea() override;
+        double getVolume() override;
+        std::string ToString() override;
+        void read(std::istream& is) override;
+        bool operator==(Tetrahedron& other);
+        bool operator!=(Tetrahedron& other);
+        std::vector<Point> getVertices();
+        static std::string ToString(Tetrahedron& tetrahedron);
+        static Tetrahedron readFromStream(std::istream& is);
+        static Tetrahedron createFromCircumscribedSphere(Point& center, double edgeLength);
+        static Tetrahedron createFromInscribedSphere(Point& center, double edgeLength);
+    };
+}
