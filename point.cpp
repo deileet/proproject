@@ -1,30 +1,23 @@
-#include "point.h"
-#include <cmath>
+#include "Point.h"
 #include <limits>
+#include <cmath>
 
-Point::Point(double x, double y)
+Point::Point(double x_val, double y_val) : x_coord(x_val), y_coord(y_val)
 {
-    this->x = x;
-    this->y = y;
 }
 
-double Point::getX() const
+double Point::get_x()
 {
-    return this->x;
+    return x_coord;
 }
 
-double Point::getY() const
+double Point::get_y()
 {
-    return this->y;
+    return y_coord;
 }
 
-bool Point::operator==(const Point& p) const
+bool check_equal(Point first_p, Point second_p)
 {
-    const double eps = std::numeric_limits<double>::epsilon();
-    return (std::abs(x - p.x) < eps && std::abs(y - p.y) < eps);
-}
-
-bool Point::operator!=(const Point& p) const
-{
-    return !(*this == p);
+    return std::abs(first_p.get_x() - second_p.get_x()) < std::numeric_limits<double>::epsilon() &&
+        std::abs(first_p.get_y() - second_p.get_y()) < std::numeric_limits<double>::epsilon();
 }
