@@ -9,7 +9,7 @@ using namespace std;
 *@param msg Пояснительное сообщение для пользователя.
 *@return Объект созданной точки.
 */
-Point read_point(string msg = "");
+Point read_point(const string& msg = "");
 
 /**
 *@brief Точка входа в программу.
@@ -21,7 +21,7 @@ int main()
     Point p_center = read_point("Введите координаты центра (x y): ");
 
     cout << "Введите радиус описанной окружности R: " << endl;
-    double r_val;
+    double r_val = 0;
     cin >> r_val;
     if (cin.fail() || r_val <= 0) {
         cout << "Ошибка 1\n"; // Ошибка ввода данных
