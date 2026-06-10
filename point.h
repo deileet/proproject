@@ -38,4 +38,4 @@ public:
 *@param second_p Вторая точка для сравнения.
 *@return true, если точки совпадают, иначе false.
 */
-bool check_equal(Point first_p, Point second_p);
+bool check_equal(const Point& first_p, const Point& second_p);
