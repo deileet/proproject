@@ -9,7 +9,7 @@
 namespace geometry {
     Tetrahedron::Tetrahedron() {}
 
-    Tetrahedron::Tetrahedron(Point& p1, Point& p2, Point& p3, Point& p4) {
+    Tetrahedron::Tetrahedron(const Point& p1, const Point& p2, const Point& p3, const Point& p4) {
         vertices.push_back(p1);
         vertices.push_back(p2);
         vertices.push_back(p3);
@@ -20,10 +20,10 @@ namespace geometry {
         }
     }
 
-    Tetrahedron::Tetrahedron(double x1, double y1, double z1,
-        double x2, double y2, double z2,
-        double x3, double y3, double z3,
-        double x4, double y4, double z4) {
+    Tetrahedron::Tetrahedron(const double x1, const double y1, const double z1,
+        const double x2, const double y2, const double z2,
+        const double x3, const double y3, const double z3,
+        const double x4, const double y4, const double z4) {
         vertices.push_back(Point(x1, y1, z1));
         vertices.push_back(Point(x2, y2, z2));
         vertices.push_back(Point(x3, y3, z3));
@@ -34,7 +34,7 @@ namespace geometry {
         }
     }
 
-    Tetrahedron::Tetrahedron(Point& center, double edgeLength, SphereType sphereType) {
+    Tetrahedron::Tetrahedron(const Point& center, double edgeLength, SphereType sphereType) {
         if (edgeLength <= 0) {
             throw std::invalid_argument("Длина ребра тетраэдра должна быть положительным числом");
         }
@@ -69,16 +69,16 @@ namespace geometry {
         }
     }
 
-    Tetrahedron::Tetrahedron(Tetrahedron& other) : vertices(other.vertices) {}
+    Tetrahedron::Tetrahedron(const Tetrahedron& other) : vertices(other.vertices) {}
 
-    Tetrahedron& Tetrahedron::operator=(Tetrahedron& other) {
+    Tetrahedron& Tetrahedron::operator=(const Tetrahedron& other) {
         if (this != &other) {
             vertices = other.vertices;
         }
         return *this;
     }
 
-    bool Tetrahedron::isValidTetrahedron() {
+    bool Tetrahedron::isValidTetrahedron() const {
         if (vertices.size() != VERTEX_COUNT) {
             return false;
         }
@@ -104,14 +104,14 @@ namespace geometry {
         return true;
     }
 
-    double Tetrahedron::getEdgeLength() {
+    double Tetrahedron::getEdgeLength() const {
         if (vertices.size() != VERTEX_COUNT) {
             return 0.0;
         }
         return vertices[0].distanceTo(vertices[1]);
     }
 
-    double Tetrahedron::getSurfaceArea() {
+    double Tetrahedron::getSurfaceArea() const {
         if (vertices.size() != VERTEX_COUNT) {
             return 0.0;
         }
@@ -120,7 +120,7 @@ namespace geometry {
         return std::sqrt(3.0) * edge * edge;
     }
 
-    double Tetrahedron::getVolume() {
+    double Tetrahedron::getVolume() const {
         if (vertices.size() != VERTEX_COUNT) {
             return 0.0;
         }
@@ -129,7 +129,7 @@ namespace geometry {
         return std::sqrt(2.0) * edge * edge * edge / 12.0;
     }
 
-    std::string Tetrahedron::ToString() {
+    std::string Tetrahedron::ToString() const {
         std::stringstream ss;
         ss << "Tetrahedron: ";
         for (size_t i = 0; i < vertices.size(); ++i) {
@@ -162,7 +162,7 @@ namespace geometry {
         }
     }
 
-    bool Tetrahedron::operator==(Tetrahedron& other) {
+    bool Tetrahedron::operator==(const Tetrahedron& other) const {
         if (vertices.size() != other.vertices.size()) {
             return false;
         }
@@ -175,15 +175,15 @@ namespace geometry {
         return true;
     }
 
-    bool Tetrahedron::operator!=(Tetrahedron& other) {
+    bool Tetrahedron::operator!=(const Tetrahedron& other) const {
         return !(*this == other);
     }
 
-    std::vector<Point> Tetrahedron::getVertices() {
+    std::vector<Point> Tetrahedron::getVertices() const {
         return vertices;
     }
 
-    std::string Tetrahedron::ToString(Tetrahedron& tetrahedron) {
+    std::string Tetrahedron::ToString(const Tetrahedron& tetrahedron) {
         return tetrahedron.ToString();
     }
 
@@ -193,11 +193,11 @@ namespace geometry {
         return tetrahedron;
     }
 
-    Tetrahedron Tetrahedron::createFromCircumscribedSphere(Point& center, double edgeLength) {
+    Tetrahedron Tetrahedron::createFromCircumscribedSphere(const Point& center, double edgeLength) {
         return Tetrahedron(center, edgeLength, SphereType::Circumscribed);
     }
 
-    Tetrahedron Tetrahedron::createFromInscribedSphere(Point& center, double edgeLength) {
+    Tetrahedron Tetrahedron::createFromInscribedSphere(const Point& center, double edgeLength) {
         return Tetrahedron(center, edgeLength, SphereType::Inscribed);
     }
 }
