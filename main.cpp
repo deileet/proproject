@@ -4,8 +4,17 @@
 
 using namespace std;
 
+/**
+*@brief Выполняет чтение координат из стандартного потока.
+*@param msg Пояснительное сообщение для пользователя.
+*@return Объект созданной точки.
+*/
 Point read_point(string msg = "");
 
+/**
+*@brief Точка входа в программу.
+*@return 0, если программа выполнена корректно.
+*/
 int main()
 {
     system("chcp 1251");
@@ -15,7 +24,7 @@ int main()
     double r_val;
     cin >> r_val;
     if (cin.fail() || r_val <= 0) {
-        cout << "Ошибка 1\n";
+        cout << "Ошибка 1\n"; // Ошибка ввода данных
         exit(1);
     }
 
@@ -36,7 +45,7 @@ Point read_point(string msg)
     cin >> in_x >> in_y;
     if (cin.fail())
     {
-        cout << "Ошибка 1\n";
+        cout << "Ошибка 1\n"; // Ошибка ввода координат
         exit(1);
     }
     return Point(in_x, in_y);
