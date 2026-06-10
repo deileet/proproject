@@ -32,8 +32,7 @@ public:
     *@brief Определяет размер стороны фигуры.
     *@return Длина стороны.
     */
-    double calculate_edge();
-
+    double calculate_edge() const ;
     /**
     *@brief Вычисляет общую площадь фигуры.
     *@return Значение площади.
