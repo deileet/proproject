@@ -7,6 +7,10 @@
 #include "ListNode.h"
 
 namespace collections {
+    /**
+     * @brief Класс линейного двусвязного списка
+     * @tparam T тип данных, хранящихся в списке
+     */
     template<typename T>
     class LinkedList {
     private:
@@ -14,7 +18,11 @@ namespace collections {
         ListNode<T>* last;
         size_t count;
 
-        void cloneFrom(LinkedList<T>& other) {
+        /**
+         * @brief Копирует содержимое другого списка
+         * @param other - список для копирования
+         */
+        void cloneFrom(const LinkedList<T>& other) {
             ListNode<T>* current = other.first;
             while (current != nullptr) {
                 push_back(current->value);
@@ -23,20 +31,35 @@ namespace collections {
         }
 
     public:
+        /**
+         * @brief Конструктор по умолчанию
+         */
         LinkedList() : first(nullptr), last(nullptr), count(0) {}
 
-        LinkedList(std::initializer_list<T> init)
+        /**
+         * @brief Конструктор со списком инициализации
+         * @param init - список инициализации
+         */
+        LinkedList(const std::initializer_list<T> init)
             : first(nullptr), last(nullptr), count(0) {
-            for (auto& val : init) {
+            for (const auto& val : init) {
                 push_back(val);
             }
         }
 
-        LinkedList(LinkedList<T>& other)
+        /**
+         * @brief Конструктор копирования
+         * @param other - другой список
+         */
+        LinkedList(const LinkedList<T>& other)
             : first(nullptr), last(nullptr), count(0) {
             cloneFrom(other);
         }
 
+        /**
+         * @brief Конструктор перемещения
+         * @param other - другой список
+         */
         LinkedList(LinkedList<T>&& other) noexcept
             : first(other.first), last(other.last), count(other.count) {
             other.first = nullptr;
@@ -44,11 +67,19 @@ namespace collections {
             other.count = 0;
         }
 
+        /**
+         * @brief Деструктор
+         */
         ~LinkedList() {
             clear();
         }
 
-        LinkedList<T>& operator=(LinkedList<T>& other) {
+        /**
+         * @brief Оператор присваивания копированием
+         * @param other - другой список
+         * @return ссылка на текущий объект
+         */
+        LinkedList<T>& operator=(const LinkedList<T>& other) {
             if (this != &other) {
                 clear();
                 cloneFrom(other);
@@ -56,6 +87,11 @@ namespace collections {
             return *this;
         }
 
+        /**
+         * @brief Оператор присваивания перемещением
+         * @param other - другой список
+         * @return ссылка на текущий объект
+         */
         LinkedList<T>& operator=(LinkedList<T>&& other) noexcept {
             if (this != &other) {
                 clear();
@@ -69,12 +105,24 @@ namespace collections {
             return *this;
         }
 
+        /**
+         * @brief Оператор сдвига влево (вывод в поток)
+         * @param os - поток вывода
+         * @param list - список для вывода
+         * @return ссылка на поток вывода
+         */
         template<typename U>
-        friend std::ostream& operator<<(std::ostream& os, LinkedList<U>& list) {
+        friend std::ostream& operator<<(std::ostream& os, const LinkedList<U>& list) {
             os << list.asString();
             return os;
         }
 
+        /**
+         * @brief Оператор сдвига вправо (ввод из потока)
+         * @param is - поток ввода
+         * @param list - список для ввода
+         * @return ссылка на поток ввода
+         */
         template<typename U>
         friend std::istream& operator>>(std::istream& is, LinkedList<U>& list) {
             list.clear();
@@ -86,7 +134,11 @@ namespace collections {
             return is;
         }
 
-        void push_back(T& val) {
+        /**
+         * @brief Вставка элемента в конец списка
+         * @param val - значение элемента
+         */
+        void push_back(const T& val) {
             ListNode<T>* newNode = new ListNode<T>(val);
             if (first == nullptr) {
                 first = last = newNode;
@@ -99,7 +151,11 @@ namespace collections {
             ++count;
         }
 
-        void push_front(T& val) {
+        /**
+         * @brief Вставка элемента в начало списка
+         * @param val - значение элемента
+         */
+        void push_front(const T& val) {
             ListNode<T>* newNode = new ListNode<T>(val);
             if (first == nullptr) {
                 first = last = newNode;
@@ -112,7 +168,12 @@ namespace collections {
             ++count;
         }
 
-        void insert(size_t index, T& val) {
+        /**
+         * @brief Вставка элемента по индексу
+         * @param index - позиция для вставки
+         * @param val - значение элемента
+         */
+        void insert(const size_t index, const T& val) {
             if (index > count) {
                 throw std::out_of_range("Индекс выходит за пределы списка");
             }
@@ -139,6 +200,9 @@ namespace collections {
             ++count;
         }
 
+        /**
+         * @brief Удаление элемента из конца списка
+         */
         void pop_back() {
             if (isEmpty()) {
                 throw std::out_of_range("Список пуст");
@@ -157,6 +221,9 @@ namespace collections {
             --count;
         }
 
+        /**
+         * @brief Удаление элемента из начала списка
+         */
         void pop_front() {
             if (isEmpty()) {
                 throw std::out_of_range("Список пуст");
@@ -175,7 +242,11 @@ namespace collections {
             --count;
         }
 
-        void erase(size_t index) {
+        /**
+         * @brief Удаление элемента по индексу
+         * @param index - позиция элемента
+         */
+        void erase(const size_t index) {
             if (index >= count) {
                 throw std::out_of_range("Индекс выходит за пределы списка");
             }
@@ -200,7 +271,12 @@ namespace collections {
             --count;
         }
 
-        bool remove(T& val) {
+        /**
+         * @brief Удаление элемента по значению (первое вхождение)
+         * @param val - значение для удаления
+         * @return true, если элемент найден и удален
+         */
+        bool remove(const T& val) {
             int idx = indexOf(val);
             if (idx != -1) {
                 erase(idx);
@@ -209,7 +285,12 @@ namespace collections {
             return false;
         }
 
-        int indexOf(T& val) {
+        /**
+         * @brief Поиск элемента по значению
+         * @param val - значение для поиска
+         * @return индекс элемента или -1, если не найден
+         */
+        int indexOf(const T& val) const {
             ListNode<T>* current = first;
             size_t idx = 0;
             while (current != nullptr) {
@@ -222,7 +303,12 @@ namespace collections {
             return -1;
         }
 
-        void setAt(size_t index, T& val) {
+        /**
+         * @brief Изменение элемента по индексу
+         * @param index - позиция элемента
+         * @param val - новое значение
+         */
+        void setAt(const size_t index, const T& val) {
             if (index >= count) {
                 throw std::out_of_range("Индекс выходит за пределы списка");
             }
@@ -234,7 +320,12 @@ namespace collections {
             current->value = val;
         }
 
-        T& operator[](size_t index) {
+        /**
+         * @brief Оператор доступа по индексу (неконстантный)
+         * @param index - позиция элемента
+         * @return ссылка на элемент
+         */
+        T& operator[](const size_t index) {
             if (index >= count) {
                 throw std::out_of_range("Индекс выходит за пределы списка");
             }
@@ -246,14 +337,42 @@ namespace collections {
             return current->value;
         }
 
-        size_t getCount() {
+        /**
+         * @brief Оператор доступа по индексу (константный)
+         * @param index - позиция элемента
+         * @return константная ссылка на элемент
+         */
+        const T& operator[](const size_t index) const {
+            if (index >= count) {
+                throw std::out_of_range("Индекс выходит за пределы списка");
+            }
+
+            ListNode<T>* current = first;
+            for (size_t i = 0; i < index; ++i) {
+                current = current->nextNode;
+            }
+            return current->value;
+        }
+
+        /**
+         * @brief Получение размера списка
+         * @return количество элементов
+         */
+        size_t getCount() const {
             return count;
         }
 
-        bool isEmpty() {
+        /**
+         * @brief Проверка, пуст ли список
+         * @return true, если список пуст
+         */
+        bool isEmpty() const {
             return count == 0;
         }
 
+        /**
+         * @brief Очистка списка
+         */
         void clear() {
             ListNode<T>* current = first;
             while (current != nullptr) {
@@ -265,7 +384,11 @@ namespace collections {
             count = 0;
         }
 
-        std::string asString() {
+        /**
+         * @brief Сериализация в строку
+         * @return строковое представление списка
+         */
+        std::string asString() const {
             std::stringstream ss;
             ss << "[";
             ListNode<T>* current = first;
@@ -280,7 +403,11 @@ namespace collections {
             return ss.str();
         }
 
-        ListNode<T>* getFirst() {
+        /**
+         * @brief Получение указателя на начало списка
+         * @return указатель на первый элемент списка
+         */
+        ListNode<T>* getFirst() const {
             return first;
         }
     };
