@@ -9,6 +9,10 @@
 #include <windows.h>
 #endif
 
+/**
+* @brief точка входа в программу
+* @return 0, если программа выполнена успешно
+*/
 int main(void) {
 #ifdef _WIN32
     SetConsoleCP(1251);
@@ -21,6 +25,8 @@ int main(void) {
 
         std::cout << "1. Создание тетраэдра через четыре точки:\n";
 
+        // Используем ГАРАНТИРОВАННО правильные координаты тетраэдра
+        // Правильный тетраэдр с длиной ребра sqrt(8) ≈ 2.828
         geometry::Point p1(1, 1, 1);
         geometry::Point p2(1, -1, -1);
         geometry::Point p3(-1, 1, -1);
@@ -90,7 +96,7 @@ int main(void) {
         try {
             geometry::Tetrahedron invalidTetrahedron(0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3);
         }
-        catch (std::exception& e) {
+        catch (const std::exception& e) {
             std::cout << "Исключение: " << e.what() << "\n";
         }
 
@@ -98,7 +104,7 @@ int main(void) {
         try {
             geometry::Tetrahedron invalidTetrahedron2(center1, -1.0, geometry::SphereType::Circumscribed);
         }
-        catch (std::exception& e) {
+        catch (const std::exception& e) {
             std::cout << "Исключение: " << e.what() << "\n";
         }
 
@@ -109,7 +115,7 @@ int main(void) {
         }
 
     }
-    catch (std::exception& e) {
+    catch (const std::exception& e) {
         std::cerr << "Ошибка: " << e.what() << std::endl;
         return 1;
     }
