@@ -27,8 +27,7 @@ public:
     *@param rad Величина радиуса.
     *@param edge_p Точка на окружности.
     */
-    Figure(const Point& center_p, double rad, const Point& edge_p);
-
+    Figure(const Point& center_p, const double rad, const Point& edge_p);
     /**
     *@brief Определяет размер стороны фигуры.
     *@return Длина стороны.
