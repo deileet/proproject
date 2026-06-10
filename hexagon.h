@@ -37,5 +37,5 @@ public:
     *@brief Вычисляет общую площадь фигуры.
     *@return Значение площади.
     */
-    double calculate_square();
+    double calculate_square() const;
 };
