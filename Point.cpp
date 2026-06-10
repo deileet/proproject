@@ -5,38 +5,38 @@
 #include <limits>
 
 namespace geometry {
-    Point::Point(double x, double y, double z) : x(x), y(y), z(z) {}
+    Point::Point(const double x, const double y, const double z) : x(x), y(y), z(z) {}
 
-    double Point::getX() {
+    double Point::getX() const {
         return x;
     }
 
-    double Point::getY() {
+    double Point::getY() const {
         return y;
     }
 
-    double Point::getZ() {
+    double Point::getZ() const {
         return z;
     }
 
-    double Point::distanceTo(Point& other) {
+    double Point::distanceTo(const Point& other) const {
         double dx = x - other.x;
         double dy = y - other.y;
         double dz = z - other.z;
         return std::sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    bool Point::operator==(Point& other) {
+    bool Point::operator==(const Point& other) const {
         return std::abs(x - other.x) < std::numeric_limits<double>::epsilon() &&
             std::abs(y - other.y) < std::numeric_limits<double>::epsilon() &&
             std::abs(z - other.z) < std::numeric_limits<double>::epsilon();
     }
 
-    bool Point::operator!=(Point& other) {
+    bool Point::operator!=(const Point& other) const {
         return !(*this == other);
     }
 
-    std::ostream& operator<<(std::ostream& os, Point& point) {
+    std::ostream& operator<<(std::ostream& os, const Point& point) {
         os << "(" << point.x << ", " << point.y << ", " << point.z << ")";
         return os;
     }
