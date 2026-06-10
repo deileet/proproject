@@ -1,7 +1,7 @@
 #include "RegularSolid.h"
 
 namespace geometry {
-    std::ostream& operator<<(std::ostream& os, RegularSolid& solid) {
+    std::ostream& operator<<(std::ostream& os, const RegularSolid& solid) {
         os << solid.ToString();
         return os;
     }
@@ -11,7 +11,7 @@ namespace geometry {
         return is;
     }
 
-    std::string RegularSolid::ToString(RegularSolid& solid) {
+    std::string RegularSolid::ToString(const RegularSolid& solid) {
         return solid.ToString();
     }
 
