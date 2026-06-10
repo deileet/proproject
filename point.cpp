@@ -2,16 +2,16 @@
 #include <limits>
 #include <cmath>
 
-Point::Point(double x_val, double y_val) : x_coord(x_val), y_coord(y_val)
+Point::Point(const double x_val, const double y_val) : x_coord(x_val), y_coord(y_val)
 {
 }
 
-double Point::get_x()
+double Point::get_x() const
 {
     return x_coord;
 }
 
-double Point::get_y()
+double Point::get_y() const
 {
     return y_coord;
 }
