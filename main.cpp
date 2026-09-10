@@ -1,15 +1,60 @@
+#include <cstdlib>
 #include <iostream>
-#include "Hexagon.h"
 #include <string>
+#include "RegularHexagon.h"
 
-using namespace std;
+namespace
+{
+    void prepareConsole()
+    {
+#ifdef _WIN32
+        std::system("chcp 1251 > nul");
+#else
+#endif
+    }
 
-/**
-*@brief Выполняет чтение координат из стандартного потока.
-*@param msg Пояснительное сообщение для пользователя.
-*@return Объект созданной точки.
-*/
-Point read_point(const string& msg = "");
+    /**
+    *@brief Выполняет чтение координат из стандартного потока.
+    *@param hint Пояснительное сообщение для пользователя.
+    *@return Объект созданной точки.
+    */
+    Vertex2D readVertex(const std::string& hint)
+    {
+        std::cout << hint << '\n';
+
+        double xVal = 0.0;
+        double yVal = 0.0;
+        std::cin >> xVal >> yVal;
+
+        if (std::cin.fail())
+        {
+            std::cout << "Ошибка 1\n";
+            std::exit(EXIT_FAILURE);
+        }
+
+        return Vertex2D(xVal, yVal);
+    }
+
+    /**
+    *@brief Выполняет чтение радиуса описанной окружности.
+    *@return Значение радиуса.
+    */
+    double readRadius()
+    {
+        std::cout << "Введите радиус описанной окружности R: " << '\n';
+
+        double radius = 0.0;
+        std::cin >> radius;
+
+        if (std::cin.fail() || radius <= 0.0)
+        {
+            std::cout << "Ошибка 1\n";
+            std::exit(EXIT_FAILURE);
+        }
+
+        return radius;
+    }
+}
 
 /**
 *@brief Точка входа в программу.
@@ -17,36 +62,16 @@ Point read_point(const string& msg = "");
 */
 int main()
 {
-    system("chcp 1251");
-    Point p_center = read_point("Введите координаты центра (x y): ");
+    prepareConsole();
 
-    cout << "Введите радиус описанной окружности R: " << endl;
-    double r_val = 0;
-    cin >> r_val;
-    if (cin.fail() || r_val <= 0) {
-        cout << "Ошибка 1\n"; // Ошибка ввода данных
-        exit(1);
-    }
+    const Vertex2D center = readVertex("Введите координаты центра (x y): ");
+    const double radius = readRadius();
+    const Vertex2D probe = readVertex("Введите точку на окружности (x y): ");
 
-    Point p_on_circle = read_point("Введите точку на окружности (x y): ");
+    const RegularHexagon hexagon(center, radius, probe);
 
-    Figure hex_obj(p_center, r_val, p_on_circle);
+    std::cout << "Длина стороны: " << hexagon.sideLength() << std::endl;
+    std::cout << "Площадь фигуры: " << hexagon.surfaceArea() << std::endl;
 
-    cout << "Длина стороны: " << hex_obj.calculate_edge() << endl;
-    cout << "Площадь фигуры: " << hex_obj.calculate_square() << endl;
-
-    return 0;
-}
-
-Point read_point(string msg)
-{
-    cout << msg << endl;
-    double in_x = 0, in_y = 0;
-    cin >> in_x >> in_y;
-    if (cin.fail())
-    {
-        cout << "Ошибка 1\n"; // Ошибка ввода координат
-        exit(1);
-    }
-    return Point(in_x, in_y);
+    return EXIT_SUCCESS;
 }
