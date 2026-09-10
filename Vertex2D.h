@@ -1,41 +1,45 @@
-#pragma once 
+#pragma once
 
 /**
 *@brief Класс для работы с двумерными координатами.
 */
-class Point
+class Vertex2D
 {
 private:
     /**
     *@brief Значение абсциссы.
     */
-    double x_coord;
+    double xPos;
     /**
     *@brief Значение ординаты.
     */
-    double y_coord;
+    double yPos;
+
 public:
     /**
     *@brief Инициализирует объект точки.
-    *@param x_val Начальная координата x.
-    *@param y_val Начальная координата y.
+    *@param xVal Начальная координата x.
+    *@param yVal Начальная координата y.
     */
-    Point(const double x_val = 0, const double y_val = 0);
+    Vertex2D(const double xVal = 0.0, const double yVal = 0.0);
+
     /**
     *@brief Получает текущую координату x.
     *@return Значение x.
     */
-    double get_x() const;
+    double abscissa() const;
+
     /**
     *@brief Получает текущую координату y.
     *@return Значение y.
     */
-    double get_y() const;
+    double ordinate() const;
 };
+
 /**
 *@brief Выполняет проверку идентичности двух точек.
-*@param first_p Первая точка для сравнения.
-*@param second_p Вторая точка для сравнения.
+*@param lhs Первая точка для сравнения.
+*@param rhs Вторая точка для сравнения.
 *@return true, если точки совпадают, иначе false.
 */
-bool check_equal(const Point& first_p, const Point& second_p);
+bool areCoincident(const Vertex2D& lhs, const Vertex2D& rhs);
